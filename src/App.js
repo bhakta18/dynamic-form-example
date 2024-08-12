@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useRef, useState } from 'react';
 
-function App() {
+const RealTimeValidationForm = () => {
+  const inputRef = useRef(null);
+  const [isValid, setIsValid] = useState(true);
+  const minLength = 5;
+
+  const handleInputChange = () => {
+    const value = inputRef.current.value;
+    setIsValid(value.length >= minLength);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder="Minimum 5 characters"
+        onChange={handleInputChange}
+        style={{ borderColor: isValid ? 'green' : 'red' }}
+      />
+      {!isValid && <p style={{ color: 'red' }}>Input must be at least {minLength} characters long.</p>}
     </div>
   );
-}
+};
 
-export default App;
+export default RealTimeValidationForm;
